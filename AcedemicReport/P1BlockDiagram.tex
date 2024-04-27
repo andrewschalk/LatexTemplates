@@ -1,0 +1,37 @@
+\documentclass[border = .2cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+
+
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+% The block diagram code is probably more verbose than necessary
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (controller) {$G_c(s)$};
+    \node [block, right of=controller,
+            node distance=3cm] (system) {$G(s)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \draw [->] (controller) -- node[name=u] {} (system);
+    \node [output, right of=system] (output) {};
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node[pos=.3] {$R(s)$} (sum);
+    \node at (.75,.2){$+$};
+    \draw [->] (sum) -- node {} (controller);
+    \draw [->] (system) -- node[pos = .5] [name=y] {$Y(s)$}(output);
+    \draw (y) |- (2,-1.5);
+    \draw [->] (2,-1.5) -| node[pos=0.99] {$-$} (sum);
+\end{tikzpicture}
+
+\end{document}
