@@ -5,4 +5,4 @@
 My latex templates.
 
 ## Including
-- Acedemic Report
+- Academic Report
